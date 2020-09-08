@@ -3,18 +3,20 @@ require('./models/Track');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const { config } = require('dotenv');
 const authRoutes = require('./routes/authRoutes');
 const trackRoutes = require('./routes/trackRoutes');
 const requireAuth = require('./middlewares/requireAuth');
 
 const app = express();
+config();
 
 app.use(bodyParser.json());
 app.use(authRoutes);
 app.use(trackRoutes);
 
 
-const mongoUri = 'mongodb+srv://admin:reactnative@cluster0.p6q9s.mongodb.net/tracker?retryWrites=true&w=majority';
+const mongoUri = process.env.MONGO_URI;
 if (!mongoUri) {
   throw new Error(
     `MongoURI was not supplied.  Make sure you watch the video on setting up Mongo DB!`
